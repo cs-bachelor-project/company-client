@@ -110,7 +110,7 @@ export default {
       this.meta.ready = false;
 
       try {
-        let res = await this.$axios.get('drivers');
+        let res = await this.$axios.get('companies/drivers');
         this.drivers = res.data;
 
         this.meta.ready = true;
@@ -123,7 +123,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.post('tasks', this.entry);
+        let res = await this.$axios.post('companies/tasks', this.entry);
 
         this.$store.state.loading = false
         this.$store.commit('alerting', {type: 'success', data: res.data.message})

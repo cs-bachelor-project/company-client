@@ -65,7 +65,7 @@
               <div class="row">
                 <div class="col-md-2 mb-3"><strong>Time</strong></div>
                 <div class="col-md-10 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'drop').scheduled_at" title="Time in UTC" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'pick').scheduled_at" title="Time in UTC" required>
                 </div>
               </div>
             </td>
@@ -126,10 +126,10 @@ export default {
       this.meta.ready = false
 
       try {
-        let res = await this.$axios.get(`tasks/${this.$route.params.id}?include=details`)
+        let res = await this.$axios.get(`companies/tasks/${this.$route.params.id}?include=details`)
         this.entry = res.data
 
-        let driverRes = await this.$axios.get(`drivers`)
+        let driverRes = await this.$axios.get('companies/drivers')
         this.drivers = driverRes.data
 
         this.meta.ready = true
@@ -142,7 +142,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.patch(`tasks/${this.$route.params.id}`, this.entry)
+        let res = await this.$axios.patch(`companies/tasks/${this.$route.params.id}`, this.entry)
 
         this.$store.state.loading = false
         this.$store.commit('alerting', {type: 'success', data: res.data.message})
@@ -157,7 +157,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.delete(`tasks/${this.$route.params.id}`)
+        let res = await this.$axios.delete(`companies/tasks/${this.$route.params.id}`)
 
         this.$store.state.loading = false
         this.$store.commit('alerting', {type: 'success', data: res.data.message})

@@ -53,7 +53,7 @@ export default {
         this.meta.ready = false
 
         try {
-          let res = await this.$axios.get('users?include=roles')
+          let res = await this.$axios.get('companies/users?include=roles')
 
           this.entries = res.data.data
           this.meta.totalPages = res.data.meta.last_page

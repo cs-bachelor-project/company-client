@@ -77,10 +77,10 @@ export default {
       this.meta.ready = false
 
       try {
-        let res = await this.$axios.get(`users/${this.$route.params.id}?include=roles,tasks`)
+        let res = await this.$axios.get(`companies/users/${this.$route.params.id}?include=roles,tasks`)
         this.entry = res.data
 
-        let rolesRes = await this.$axios.get(`roles`)
+        let rolesRes = await this.$axios.get('auth/roles')
         this.roles = rolesRes.data.data
 
         this.entry.roles.forEach(role => this.selectedRoles.push(role.id))
@@ -98,7 +98,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.patch(`users/${this.$route.params.id}`, {
+        let res = await this.$axios.patch(`companies/users/${this.$route.params.id}`, {
           name: this.entry.name,
         })
 
@@ -117,7 +117,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.patch(`users/${this.$route.params.id}`, {
+        let res = await this.$axios.patch(`companies/users/${this.$route.params.id}`, {
           email: this.entry.email,
         })
 
@@ -136,7 +136,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.post(`users/${this.$route.params.id}/roles`, {
+        let res = await this.$axios.post(`companies/users/${this.$route.params.id}/roles`, {
           roles: this.selectedRoles,
         })
 
@@ -151,7 +151,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.delete(`users/${this.$route.params.id}`)
+        let res = await this.$axios.delete(`companies/users/${this.$route.params.id}`)
 
         this.$store.state.loading = false
         this.$store.commit('alerting', {type: 'success', data: res.data.message})

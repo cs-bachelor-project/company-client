@@ -152,7 +152,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.post("http://localhost:8000/api/register", this.data)
+        let res = await this.$axios.post("auth/register", this.data)
 
         this.$store.state.loading = false
         this.$store.commit('alerting', {type: 'success', data: res.data.message})

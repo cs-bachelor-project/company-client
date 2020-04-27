@@ -61,7 +61,7 @@ export default {
       this.meta.ready = false;
 
       try {
-        let res = await this.$axios.get('roles');
+        let res = await this.$axios.get('auth/roles');
         this.roles = res.data.data;
 
         this.meta.ready = true;
@@ -74,7 +74,7 @@ export default {
       this.$store.state.loading = true
 
       try {
-        let res = await this.$axios.post('users', this.entry);
+        let res = await this.$axios.post('companies/users', this.entry);
 
         this.$store.state.loading = false
         this.$store.commit('alerting', {type: 'success', data: res.data.message})

@@ -79,7 +79,7 @@ export default {
       }
 
       try {
-        let res = await this.$axios.get(`tasks?include=details&status=${this.completed}`)
+        let res = await this.$axios.get(`companies/tasks?include=details&status=${this.completed}`)
 
         this.entries = res.data.data
         this.meta.totalPages = res.data.meta.last_page
@@ -109,7 +109,7 @@ export default {
           return this.loadData()
         }
 
-        let res = await this.$axios.get(`tasks/search?include=details&status=${this.completed}&q=${this.q}`)
+        let res = await this.$axios.get(`companies/tasks/search?include=details&status=${this.completed}&q=${this.q}`)
 
         this.entries = res.data.data
         this.meta.totalPages = res.data.meta.last_page
