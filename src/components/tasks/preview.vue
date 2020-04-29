@@ -13,13 +13,13 @@
 
       <form @submit.prevent="updateTask">
         <table class="table table-hover" v-if="entry">
-          <tr v-if="entry.details.find(elm => elm.task == 'pick').completed_at != null">
+          <tr v-if="entry.details.find(elm => elm.action == 'pick').completed_at != null">
             <th>Picked up at</th>
-            <td>{{entry.details.find(elm => elm.task == 'pick').completed_at}}</td>
+            <td>{{entry.details.find(elm => elm.action == 'pick').completed_at}}</td>
           </tr>
-          <tr v-if="entry.details.find(elm => elm.task == 'drop').completed_at != null">
+          <tr v-if="entry.details.find(elm => elm.action == 'drop').completed_at != null">
             <th>Dropped off at</th>
-            <td>{{entry.details.find(elm => elm.task == 'drop').completed_at}}</td>
+            <td>{{entry.details.find(elm => elm.action == 'drop').completed_at}}</td>
           </tr>
           <tr>
             <th scope="col">#</th>
@@ -46,26 +46,26 @@
             <td>
               <div class="row">
                 <div class="col-md-2 mb-3">
-                  <input type="text" class="form-control" :value="entry.details.find(elm => elm.task == 'pick').country" disabled>
+                  <input type="text" class="form-control" :value="entry.details.find(elm => elm.action == 'pick').country" disabled>
                 </div>
 
                 <div class="col-md-3 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'pick').city" placeholder="City" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').city" placeholder="City" required>
                 </div>
 
                 <div class="col-md-5 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'pick').street" placeholder="Street" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street" placeholder="Street" required>
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'pick').street_number" placeholder="Street number" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street_number" placeholder="Street number" required>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-2 mb-3"><strong>Time</strong></div>
                 <div class="col-md-10 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'pick').scheduled_at" title="Time in UTC" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').scheduled_at" title="Time in UTC" required>
                 </div>
               </div>
             </td>
@@ -75,26 +75,26 @@
             <td>
               <div class="row">
                 <div class="col-md-2 mb-3">
-                  <input type="text" class="form-control" :value="entry.details.find(elm => elm.task == 'drop').country" disabled>
+                  <input type="text" class="form-control" :value="entry.details.find(elm => elm.action == 'drop').country" disabled>
                 </div>
 
                 <div class="col-md-3 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'drop').city" placeholder="City" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').city" placeholder="City" required>
                 </div>
 
                 <div class="col-md-5 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'drop').street" placeholder="Street" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street" placeholder="Street" required>
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'drop').street_number" placeholder="Street number" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street_number" placeholder="Street number" required>
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-2 mb-3"><strong>Time</strong></div>
                 <div class="col-md-10 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.task == 'drop').scheduled_at" title="Time in UTC" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').scheduled_at" title="Time in UTC" required>
                 </div>
               </div>
             </td>

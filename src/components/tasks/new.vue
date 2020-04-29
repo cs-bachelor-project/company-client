@@ -87,14 +87,14 @@ export default {
             city: '',
             street: '',
             street_number: '',
-            task: 'pick',
+            action: 'pick',
             scheduled_at: '',
           },
           {
             city: '',
             street: '',
             street_number: '',
-            task: 'drop',
+            action: 'drop',
             scheduled_at: '',
           }
         ],
