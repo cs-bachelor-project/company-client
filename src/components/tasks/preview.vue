@@ -63,9 +63,11 @@
               </div>
 
               <div class="row">
-                <div class="col-md-2 mb-3"><strong>Time</strong></div>
-                <div class="col-md-10 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').scheduled_at" title="Time in UTC" required>
+                <div class="col-md-5 mb-3">
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').phone" placeholder="Phone">
+                </div>
+                <div class="col-md-7 mb-3">
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').scheduled_at" title="Time in UTC" placeholder="Time" required>
                 </div>
               </div>
             </td>
@@ -92,9 +94,11 @@
               </div>
 
               <div class="row">
-                <div class="col-md-2 mb-3"><strong>Time</strong></div>
-                <div class="col-md-10 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').scheduled_at" title="Time in UTC" required>
+                <div class="col-md-5 mb-3">
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').phone" placeholder="Phone">
+                </div>
+                <div class="col-md-7 mb-3">
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').scheduled_at" title="Time in UTC" placeholder="Time" required>
                 </div>
               </div>
             </td>

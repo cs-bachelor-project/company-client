@@ -6,28 +6,28 @@
       <h4 class="mb-3">New Task</h4>
       <form @submit.prevent="createTask">
         <div class="row">
-          <div class="col-md-6 mb-3">
+          <div class="col-md-3 mb-3">
             <input type="text" class="form-control" placeholder="Passenger Name" v-model="entry.person_name" required />
           </div>
 
-          <div class="col-md-6 mb-3">
+          <div class="col-md-3 mb-3">
             <select class="custom-select" required v-model="entry.user_id">
               <option value="" disabled>Choose Driver</option>
                 <option :value="driver.id" v-for="driver in drivers" :key="driver.id">{{driver.name}}</option>
             </select>
           </div>
+
+          <div class="col-md-6 mb-3">
+            <input type="text" class="form-control" v-model="entry.note" placeholder="Note (optional)" maxlength="255">
+          </div>
         </div>
 
         <div class="row">
-          <div class="col-md-1 mb-3">
-            <input type="text" class="form-control" value="Denmark" disabled>
-          </div>
-
           <div class="col-md-2 mb-3">
             <input type="text" class="form-control" v-model="entry.details[0].city" placeholder="Pick up City" required>
           </div>
 
-          <div class="col-md-4 mb-3">
+          <div class="col-md-3 mb-3">
             <input type="text" class="form-control" v-model="entry.details[0].street" placeholder="Pick up Street" required>
           </div>
 
@@ -35,21 +35,21 @@
             <input type="text" class="form-control" v-model="entry.details[0].street_number" placeholder="Pick up Street number" required>
           </div>
 
+          <div class="col-md-2 mb-3">
+            <input type="text" class="form-control" v-model="entry.details[0].phone" placeholder="Pick up Phone (Optional)">
+          </div>
+
           <div class="col-md-3 mb-3">
-            <datetime type="datetime" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[0].scheduled_at" required></datetime>
+            <datetime type="datetime" placeholder="Pick up time" input-class="form-control" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[0].scheduled_at" required></datetime>
           </div>
         </div>
 
         <div class="row">
-          <div class="col-md-1 mb-3">
-            <input type="text" class="form-control" value="Denmark" disabled>
-          </div>
-
           <div class="col-md-2 mb-3">
             <input type="text" class="form-control" v-model="entry.details[1].city" placeholder="Drop off City" required>
           </div>
 
-          <div class="col-md-4 mb-3">
+          <div class="col-md-3 mb-3">
             <input type="text" class="form-control" v-model="entry.details[1].street" placeholder="Drop off Street" required>
           </div>
 
@@ -57,14 +57,12 @@
             <input type="text" class="form-control" v-model="entry.details[1].street_number" placeholder="Drop off Street number" required>
           </div>
 
-          <div class="col-md-3 mb-3">
-            <datetime type="datetime" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[1].scheduled_at" required></datetime>
+          <div class="col-md-2 mb-3">
+            <input type="text" class="form-control" v-model="entry.details[1].phone" placeholder="Drop off Phone (Optional)">
           </div>
-        </div>
 
-        <div class="row">
-          <div class="col-md-12 mb-3">
-            <input type="text" class="form-control" v-model="entry.note" placeholder="Note (optional)" maxlength="255">
+          <div class="col-md-3 mb-3">
+            <datetime type="datetime" placeholder="Drop off time" input-class="form-control" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[1].scheduled_at" required></datetime>
           </div>
         </div>
 
@@ -87,6 +85,7 @@ export default {
             city: '',
             street: '',
             street_number: '',
+            phone: '',
             action: 'pick',
             scheduled_at: '',
           },
@@ -94,6 +93,7 @@ export default {
             city: '',
             street: '',
             street_number: '',
+            phone: '',
             action: 'drop',
             scheduled_at: '',
           }
