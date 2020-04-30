@@ -29,18 +29,18 @@ export default {
   },
   methods: {
     async login() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.post('auth/login', this.data)
 
         this.setAuthToken(res.data.access_token)
 
-        this.$store.state.loading = false
+        this.$toast.clear(loading)
         this.$router.push({name: 'index'})
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.clear(loading)
+        this.$toast.error(error.response.data.message)
       }
     }
   },

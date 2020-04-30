@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <div class="progress" v-if="$store.state.loading">
-      <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-    </div>
-
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
         <a class="navbar-brand" href="#">Fixed navbar</a>
@@ -36,8 +32,6 @@
         </div>
       </div>
     </nav>
-
-    <alerts :type="$store.state.alerts.type" :data="$store.state.alerts.data" v-if="$store.state.alerts.data!=''" />
 
     <main role="main" class="container">
       <div class="card">

@@ -61,7 +61,7 @@ export default {
 
           this.meta.ready = true
         } catch (error) {
-          this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+          this.$toast.error(error.response.data.message)
         }
       },
       async loadMore() {
@@ -72,7 +72,7 @@ export default {
           this.meta.currentPage = res.data.meta.current_page
           this.meta.nextPageUrl = res.data.links.next
         } catch (error) {
-          this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+          this.$toast.error(error.response.data.message)
         }
       }
     }

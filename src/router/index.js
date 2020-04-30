@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import { store } from '../store/index'
 
 Vue.use(VueRouter)
 
@@ -26,10 +25,6 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (store.state.alerts.type != 'success') {
-    store.commit('clearAlerting')
-  }
-
   let loggedIn = new Vue().isLoggedIn()
 
   if (to.matched.some(record => record.meta.requiresAuth)) {

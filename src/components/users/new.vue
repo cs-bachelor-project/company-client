@@ -66,23 +66,22 @@ export default {
 
         this.meta.ready = true;
       } catch (error) {
-        console.log(error.response.data);
-        this.$store.commit("alerting", { type: "danger", data: error.response.data.message });
+        this.$toast.error(error.response.data.message)
       }
     },
     async createUser() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.post('companies/users', this.entry);
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
 
         this.$router.push({name: 'users'})
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit("alerting", { type: "validation", data: error.response.data.errors });
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     }
   }

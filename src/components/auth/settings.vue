@@ -18,51 +18,55 @@
         <hr class="mb-3" />
 
         <h4 class="mb-3">Password</h4>
-        <div class="row">
-          <div class="col-md-4 mb-3">
-            <input type="password" class="form-control" required v-model="password" placeholder="Password" />
-          </div>
+        <form @submit.prevent="changePassword">
+          <div class="row">
+            <div class="col-md-4 mb-3">
+              <input type="password" class="form-control" required v-model="password" placeholder="Password" />
+            </div>
 
-          <div class="col-md-4 mb-3">
-            <input type="password" class="form-control" required v-model="password_confirmation" placeholder="Password confirmation" />
-          </div>
+            <div class="col-md-4 mb-3">
+              <input type="password" class="form-control" required v-model="password_confirmation" placeholder="Password confirmation" />
+            </div>
 
-          <div class="col-md-4 mb-3">
-            <button class="btn btn-primary btn-block" type="button" @click="changePassword">Change Password</button>
+            <div class="col-md-4 mb-3">
+              <button class="btn btn-primary btn-block" type="submit">Change Password</button>
+            </div>
           </div>
-        </div>
+        </form>
 
         <hr class="mb-3" />
 
         <div>
           <h4 class="mb-3">Company Information</h4>
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <input type="text" class="form-control" placeholder="Company Name" required v-model="entry.company.name" :disabled="!hasAnyRole(['admin'])" />
-            </div>
+          <form @submit.prevent="updateCompany">
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" placeholder="Company Name" required v-model="entry.company.name" :disabled="!hasAnyRole(['admin'])" />
+              </div>
 
-            <div class="col-md-4 mb-3">
-              <select class="custom-select" required v-model="entry.company.country" :disabled="!hasAnyRole(['admin'])" >
-                <option value disabled>Country</option>
-                <option>Denmark</option>
-              </select>
+              <div class="col-md-4 mb-3">
+                <select class="custom-select" required v-model="entry.company.country" :disabled="!hasAnyRole(['admin'])" >
+                  <option value disabled>Country</option>
+                  <option>Denmark</option>
+                </select>
+              </div>
+              <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" placeholder="City" required v-model="entry.company.city" :disabled="!hasAnyRole(['admin'])" />
+              </div>
             </div>
-            <div class="col-md-4 mb-3">
-              <input type="text" class="form-control" placeholder="City" required v-model="entry.company.city" :disabled="!hasAnyRole(['admin'])" />
+              
+            <div class="row">
+              <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" placeholder="Street" required v-model="entry.company.street" :disabled="!hasAnyRole(['admin'])" />
+              </div>
+              <div class="col-md-4 mb-3">
+                <input type="text" class="form-control" placeholder="Street No." required v-model="entry.company.street_number" :disabled="!hasAnyRole(['admin'])" />
+              </div>
+              <div class="col-md-4 mb-3">
+                <button class="btn btn-primary btn-block" type="submit" :disabled="!hasAnyRole(['admin'])">Update Company Information</button>
+              </div>
             </div>
-          </div>
-            
-          <div class="row">
-            <div class="col-md-4 mb-3">
-              <input type="text" class="form-control" placeholder="Street" required v-model="entry.company.street" :disabled="!hasAnyRole(['admin'])" />
-            </div>
-            <div class="col-md-4 mb-3">
-              <input type="text" class="form-control" placeholder="Street No." required v-model="entry.company.street_number" :disabled="!hasAnyRole(['admin'])" />
-            </div>
-            <div class="col-md-4 mb-3">
-              <button class="btn btn-primary btn-block" type="button" @click="updateCompany()" :disabled="!hasAnyRole(['admin'])">Update Company Information</button>
-            </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>
@@ -91,7 +95,7 @@ export default {
 
         this.meta.ready = true
       } catch (error) {
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.errors})
+        this.$toast.error('Sorry an error occurred')
       }
     },
     async changeName() {
@@ -99,18 +103,18 @@ export default {
         return
       }
 
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`auth/me`, {
           name: this.entry.name,
         })
 
-      this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async changeEmail() {
@@ -118,22 +122,22 @@ export default {
         return
       }
       
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`auth/me`, {
           email: this.entry.email,
         })
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async changePassword() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`auth/password`, {
@@ -141,24 +145,24 @@ export default {
           password_confirmation: this.password_confirmation,
         })
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async updateCompany() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`auth/me/company`, this.entry.company)
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
   },

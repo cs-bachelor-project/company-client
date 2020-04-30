@@ -149,18 +149,18 @@ export default {
   },
   methods: {
     async register() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.post("auth/register", this.data)
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
 
         this.$router.push({name: 'login'})
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     }
   },

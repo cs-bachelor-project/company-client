@@ -27,7 +27,7 @@
           </tr>
           <tr>
             <th scope="col">Passenger Name</th>
-            <td><input type="text" class="form-control" v-model="entry.person_name"></td>
+            <td><input type="text" class="form-control" v-model="entry.person_name" required></td>
           </tr>
           <tr>
             <th scope="col">Note</th>
@@ -138,38 +138,38 @@ export default {
 
         this.meta.ready = true
       } catch (error) {
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.error('Sorry an error occurred')
         this.$router.push({name: 'tasks'})
       }
     },
     async updateTask() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`companies/tasks/${this.$route.params.id}`, this.entry)
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
 
         this.$router.push({name: 'tasks'})
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async deleteTask() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.delete(`companies/tasks/${this.$route.params.id}`)
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
 
         this.$router.push({name: 'tasks'})
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.clear(loading)
+        this.$toast.error('Sorry an error occurred')
       }
     },
   },

@@ -18,16 +18,16 @@
         </tr>
         <tr>
           <th scope="col">Name</th>
-          <td><input type="text" class="form-control" v-model="entry.name" @change="changeName" :disabled="!hasAnyRole(['admin'])"></td>
+          <td><input type="text" class="form-control" v-model="entry.name" @change="changeName" :disabled="!hasAnyRole(['admin'])" required></td>
         </tr>
         <tr>
           <th scope="col">Email</th>
-          <td><input type="text" class="form-control" v-model="entry.email" @change="changeEmail" :disabled="!hasAnyRole(['admin'])"></td>
+          <td><input type="text" class="form-control" v-model="entry.email" @change="changeEmail" :disabled="!hasAnyRole(['admin'])" required></td>
         </tr>
         <tr>
           <th scope="col">Roles</th>
           <td>
-            <select class="custom-select" multiple rows="5" v-model="selectedRoles" @change="changeRoles" :disabled="!hasAnyRole(['admin'])">
+            <select class="custom-select" multiple rows="5" v-model="selectedRoles" @change="changeRoles" :disabled="!hasAnyRole(['admin'])" required>
               <option :value="role.id" v-for="(role, index) in roles" :key="index">{{role.title}}</option>
             </select>
           </td>
@@ -86,7 +86,7 @@ export default {
         this.entry.roles.forEach(role => this.selectedRoles.push(role.id))
         this.meta.ready = true
       } catch (error) {
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.error('Sorry an error occurred')
         this.$router.push({name: 'users'})
       }
     },
@@ -95,18 +95,18 @@ export default {
         return
       }
 
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`companies/users/${this.$route.params.id}`, {
           name: this.entry.name,
         })
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async changeEmail() {
@@ -114,18 +114,18 @@ export default {
         return
       }
 
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.patch(`companies/users/${this.$route.params.id}`, {
           email: this.entry.email,
         })
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async changeRoles() {
@@ -133,33 +133,33 @@ export default {
         return
       }
 
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.post(`companies/users/${this.$route.params.id}/roles`, {
           roles: this.selectedRoles,
         })
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'validation', data: error.response.data.errors})
+        this.$toast.clear(loading)
+        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
     },
     async deleteUser() {
-      this.$store.state.loading = true
+      let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
         let res = await this.$axios.delete(`companies/users/${this.$route.params.id}`)
 
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'success', data: res.data.message})
+        this.$toast.clear(loading)
+        this.$toast.success(res.data.message)
 
         this.$router.push({name: 'users'})
       } catch (error) {
-        this.$store.state.loading = false
-        this.$store.commit('alerting', {type: 'danger', data: error.response.data.message})
+        this.$toast.clear(loading)
+        this.$toast.error('Sorry an error occurred')
       }
     },
   }

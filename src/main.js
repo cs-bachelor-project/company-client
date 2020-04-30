@@ -6,16 +6,27 @@ import moment from 'moment';
 import decode from 'jwt-decode'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-import { store } from './store/index'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-
-Vue.component('datetime', Datetime);
+import Toast, { TYPE } from "vue-toastification";
+import "vue-toastification/dist/index.css";
 
 Vue.prototype.$axios = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
   timeout: 30000,
 })
+
+Vue.use(Toast, {
+  toastDefaults: {
+      [TYPE.ERROR]: {
+          timeout: 7000,
+      },
+      [TYPE.SUCCESS]: {
+          timeout: 3000,
+      }    
+  },
+});
+Vue.component('datetime', Datetime);
 
 const AUTH_TOKEN_KEY = 'token'
 
@@ -94,11 +105,9 @@ Vue.mixin({
   }
 })
 
-Vue.component('alerts', require('./components/alerts.vue').default);
 Vue.component('loading', require('./components/loading.vue').default);
 
 new Vue({
   router,
-  store,
   render: h => h(App)
 }).$mount('#app')
