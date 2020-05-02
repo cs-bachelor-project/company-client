@@ -36,7 +36,8 @@
           <tr>
             <th scope="col">Driver</th>
             <td>
-              <select class="custom-select" required v-model="entry.user_id">
+              <select class="custom-select" v-model="entry.user_id">
+                <option value="">Choose Driver</option>
                 <option :value="driver.id" v-for="driver in drivers" :key="driver.id">{{driver.name}}</option>
               </select>
             </td>

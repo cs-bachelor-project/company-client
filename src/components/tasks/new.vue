@@ -11,8 +11,8 @@
           </div>
 
           <div class="col-md-3 mb-3">
-            <select class="custom-select" required v-model="entry.user_id">
-              <option value="" disabled>Choose Driver</option>
+            <select class="custom-select" v-model="entry.user_id">
+                <option value="">Choose Driver</option>
                 <option :value="driver.id" v-for="driver in drivers" :key="driver.id">{{driver.name}}</option>
             </select>
           </div>
