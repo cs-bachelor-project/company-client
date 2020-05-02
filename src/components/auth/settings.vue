@@ -40,29 +40,43 @@
           <h4 class="mb-3">Company Information</h4>
           <form @submit.prevent="updateCompany">
             <div class="row">
+              <div class="col-md-3 mb-3">
+                <input type="text" class="form-control" :value="entry.company.cvr" disabled />
+              </div>
+
               <div class="col-md-4 mb-3">
                 <input type="text" class="form-control" placeholder="Company Name" required v-model="entry.company.name" :disabled="!hasAnyRole(['admin'])" />
               </div>
 
-              <div class="col-md-4 mb-3">
-                <select class="custom-select" required v-model="entry.company.country" :disabled="!hasAnyRole(['admin'])" >
+              <div class="col-md-3 mb-3">
+                <select class="custom-select" required v-model="entry.company.country" :disabled="!hasAnyRole(['admin'])">
                   <option value disabled>Country</option>
                   <option>Denmark</option>
                 </select>
               </div>
-              <div class="col-md-4 mb-3">
-                <input type="text" class="form-control" placeholder="City" required v-model="entry.company.city" :disabled="!hasAnyRole(['admin'])" />
+
+              <div class="col-md-2 mb-3">
+                <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.company.postal" @keyup="entry.company.city = getCity($event.target.value)" :disabled="!hasAnyRole(['admin'])"/>
               </div>
             </div>
               
             <div class="row">
+              <div class="col-md-3 mb-3">
+                <select class="custom-select" required v-model="entry.company.city" @change="entry.company.postal = getPostal($event.target.value)" :disabled="!hasAnyRole(['admin'])">
+                  <option value disabled>City</option>
+                  <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
+                </select>
+              </div>
+
               <div class="col-md-4 mb-3">
                 <input type="text" class="form-control" placeholder="Street" required v-model="entry.company.street" :disabled="!hasAnyRole(['admin'])" />
               </div>
-              <div class="col-md-4 mb-3">
+
+              <div class="col-md-2 mb-3">
                 <input type="text" class="form-control" placeholder="Street No." required v-model="entry.company.street_number" :disabled="!hasAnyRole(['admin'])" />
               </div>
-              <div class="col-md-4 mb-3">
+
+              <div class="col-md-3 mb-3">
                 <button class="btn btn-primary btn-block" type="submit" :disabled="!hasAnyRole(['admin'])">Update Company Information</button>
               </div>
             </div>
@@ -164,7 +178,7 @@ export default {
         this.$toast.clear(loading)
         error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
-    },
+    }
   },
 }
 </script>

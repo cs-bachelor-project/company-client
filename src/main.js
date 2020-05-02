@@ -8,8 +8,9 @@ import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import Toast, { TYPE } from "vue-toastification";
-import "vue-toastification/dist/index.css";
+import Toast, { TYPE } from "vue-toastification"
+import "vue-toastification/dist/index.css"
+import cityData from "./assets/city.json"
 
 Vue.prototype.$axios = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
@@ -38,6 +39,9 @@ Vue.mixin({
       get moment() {
         return moment;
       },
+      get cities() {
+        return cityData;
+      },
       meta: {
         currentPage: 1,
         nextPageUrl: null,
@@ -47,6 +51,12 @@ Vue.mixin({
     }
   },
   methods: {
+    getPostal(city) {
+      return this.cities[city]
+    },
+    getCity(postal) {
+      return Object.keys(this.cities).find(k => this.cities[k] == postal)
+    },
     utcToLocal: function (time) {
       return this.moment.utc(time).local();
     },

@@ -63,13 +63,11 @@
 
           <h4 class="mb-3">Company Information</h4>
           <div class="row">
-            <div class="col-md-12 mb-3">
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Company Name"
-                required
-                v-model="data.company.name" />
+            <div class="col-md-3 mb-3">
+              <input type="number" class="form-control" placeholder="CVR" required v-model="data.company.cvr" @keyup="getCompanyInfo"/>
+            </div>
+            <div class="col-md-9 mb-3">
+              <input type="text" class="form-control" placeholder="Company Name" required v-model="data.company.name" />
             </div>
           </div>
 
@@ -80,8 +78,11 @@
                 <option>Denmark</option>
               </select>
             </div>
-            <div class="col-md-3 mb-3">
-              <select class="custom-select" required v-model="data.company.city">
+            <div class="col-md-2 mb-3">
+              <input type="number" class="form-control" placeholder="Postal code" required v-model="data.company.postal" @keyup="data.company.city = getCity($event.target.value)"/>
+            </div>
+            <div class="col-md-2 mb-3">
+              <select class="custom-select" required v-model="data.company.city" @change="data.company.postal = getPostal($event.target.value)">
                 <option value disabled>City</option>
                 <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
               </select>
@@ -89,7 +90,7 @@
             <div class="col-md-3 mb-3">
               <input type="text" class="form-control" placeholder="Street" required v-model="data.company.street" />
             </div>
-            <div class="col-md-3 mb-3">
+            <div class="col-md-2 mb-3">
               <input type="text" class="form-control" placeholder="Street No." required v-model="data.company.street_number" />
             </div>
           </div>
@@ -124,7 +125,6 @@
 </template>
 
 <script>
-import cityData from "../assets/city.json"
 export default {
   data() {
     return {
@@ -133,7 +133,8 @@ export default {
       data: {
         company: {
           name: "",
-          country: "",
+          country: "Denmark",
+          postal: "",
           city: "",
           street: "",
           street_number: ""
@@ -162,10 +163,25 @@ export default {
         this.$toast.clear(loading)
         error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
-    }
-  },
-  created() {
-    this.cities = cityData
+    },
+    async getCompanyInfo() {
+      if (this.data.company.cvr.length < 8) {
+        return
+      }
+
+      try {
+        let res = await this.$axios.get(`https://cvrapi.dk/api?search=${this.data.company.cvr}&country=dk`)
+
+        this.data.company.name = res.data.name
+        this.data.company.postal = res.data.zipcode
+        this.data.company.city = res.data.city
+        this.data.company.street = res.data.address.split(/^(\D*)(.*)/)[1]
+        this.data.company.street_number = res.data.address.split(/^(\D*)(.*)/)[2]
+
+      } catch (error) {
+        return 
+      }
+    },
   }
 }
 </script>
