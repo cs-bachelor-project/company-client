@@ -43,6 +43,21 @@
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {};
+  },
+  created() {
+    if (this.isLoggedIn()) {
+      if (!this.hasAnyRole(['admin', 'manager'])) {
+        this.logout();
+      }
+    }
+  }
+};
+</script>
+
 <style lang="scss">
 .card {
   top: 50px;
