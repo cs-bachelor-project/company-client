@@ -19,7 +19,7 @@ Vue.prototype.$axios = axios.create({
 Vue.use(Toast, {
   toastDefaults: {
       [TYPE.ERROR]: {
-          timeout: 7000,
+          timeout: 5000,
       },
       [TYPE.SUCCESS]: {
           timeout: 3000,
