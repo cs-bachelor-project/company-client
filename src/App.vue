@@ -18,6 +18,11 @@
               <router-link :to="{name: 'tasks'}" class="nav-link">Tasks</router-link>
             </li>
           </ul>
+
+          <form class="w-100 px-1" @submit.prevent="sendMsg">
+            <input type="text" class="form-control" placeholder="Send a message to all online drivers" v-model="msg" />
+          </form>
+
           <ul class="navbar-nav float-right">
             <li class="nav-item" v-if="!isLoggedIn()">
               <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
@@ -26,7 +31,7 @@
               <router-link :to="{name: 'settings'}" class="nav-link">Settings</router-link>
             </li>
             <li class="nav-item" v-if="isLoggedIn()">
-              <a href="" class="nav-link" @click.prevent="logout">Logout</a>
+              <a href class="nav-link" @click.prevent="logout">Logout</a>
             </li>
           </ul>
         </div>
@@ -46,14 +51,38 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      msg: '',
+    };
   },
   created() {
     if (this.isLoggedIn()) {
       if (!this.hasAnyRole(['admin', 'manager'])) {
-        this.logout();
+        this.logout()
       }
+
+      window.Echo.private(`company.${this.getUserInfo().company_id}.info`).listen('.task-detail-completed', data => {
+        let action = data.action == 'pick' ? 'picked up' : 'dropped off'
+
+        this.$toast.success(`${data.person_name} ${action}`)
+      })
     }
+  },
+  methods: {
+    async sendMsg () {
+      if (this.msg == '') {
+        return
+      }
+
+      try {
+        await this.$axios.post('companies/messages', {msg: this.msg})
+
+        this.$toast.success('Message sent successfully')
+        this.msg = ''
+      } catch (error) {
+        this.$toast.error('Sorry an error occurred')
+      }
+    },
   }
 };
 </script>
@@ -62,7 +91,8 @@ export default {
 .card {
   top: 50px;
 }
-.progress, .progress-bar {
+.progress,
+.progress-bar {
   position: fixed;
   width: 100%;
   height: 7px !important;

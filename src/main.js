@@ -11,6 +11,20 @@ import 'vue-datetime/dist/vue-datetime.css'
 import Toast, { TYPE } from "vue-toastification"
 import "vue-toastification/dist/index.css"
 import cityData from "./assets/city.json"
+import Echo from 'laravel-echo'
+window.io = require('socket.io-client')
+
+const AUTH_TOKEN_KEY = 'token'
+
+window.Echo = new Echo({
+  broadcaster: 'socket.io',
+  host: window.location.hostname + ':6001',
+  auth: {
+    headers: {
+      'Authorization': `Bearer ${localStorage.getItem(AUTH_TOKEN_KEY)}`,
+    }
+  }
+})
 
 Vue.prototype.$axios = axios.create({
   baseURL: process.env.VUE_APP_API_URL,
@@ -28,8 +42,6 @@ Vue.use(Toast, {
   },
 });
 Vue.component('datetime', Datetime);
-
-const AUTH_TOKEN_KEY = 'token'
 
 Vue.prototype.$axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(AUTH_TOKEN_KEY)}`
 
