@@ -50,11 +50,18 @@
                   <input type="text" class="form-control" :value="entry.details.find(elm => elm.action == 'pick').country" disabled>
                 </div>
 
-                <div class="col-md-3 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').city" placeholder="City" required>
+                <div class="col-md-2 mb-3">
+                  <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.details.find(elm => elm.action == 'pick').postal" @keyup="entry.details.find(elm => elm.action == 'pick').city = getCity($event.target.value)"/>
                 </div>
 
-                <div class="col-md-5 mb-3">
+                <div class="col-md-2 mb-3">
+                  <select class="custom-select" required v-model="entry.details.find(elm => elm.action == 'pick').city" @change="entry.details.find(elm => elm.action == 'pick').postal = getPostal($event.target.value)">
+                    <option value disabled>City</option>
+                    <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
                   <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street" placeholder="Street" required>
                 </div>
 
@@ -81,11 +88,18 @@
                   <input type="text" class="form-control" :value="entry.details.find(elm => elm.action == 'drop').country" disabled>
                 </div>
 
-                <div class="col-md-3 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').city" placeholder="City" required>
+                <div class="col-md-2 mb-3">
+                  <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.details.find(elm => elm.action == 'drop').postal" @keyup="entry.details.find(elm => elm.action == 'drop').city = getCity($event.target.value)"/>
                 </div>
 
-                <div class="col-md-5 mb-3">
+                <div class="col-md-2 mb-3">
+                  <select class="custom-select" required v-model="entry.details.find(elm => elm.action == 'drop').city" @change="entry.details.find(elm => elm.action == 'drop').postal = getPostal($event.target.value)">
+                    <option value disabled>City</option>
+                    <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
                   <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street" placeholder="Street" required>
                 </div>
 

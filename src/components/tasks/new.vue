@@ -24,10 +24,17 @@
 
         <div class="row">
           <div class="col-md-2 mb-3">
-            <input type="text" class="form-control" v-model="entry.details[0].city" placeholder="Pick up City" required>
+            <input type="number" class="form-control" placeholder="Pick up Postal code" required v-model="entry.details[0].postal" @keyup="entry.details[0].city = getCity($event.target.value)"/>
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div class="col-md-2 mb-3">
+            <select class="custom-select" required v-model="entry.details[0].city" @change="entry.details[0].postal = getPostal($event.target.value)">
+              <option value disabled>Pick Up City</option>
+              <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
             <input type="text" class="form-control" v-model="entry.details[0].street" placeholder="Pick up Street" required>
           </div>
 
@@ -39,17 +46,24 @@
             <input type="text" class="form-control" v-model="entry.details[0].phone" placeholder="Pick up Phone (Optional)">
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div class="col-md-2 mb-3">
             <datetime type="datetime" placeholder="Pick up time" input-class="form-control" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[0].scheduled_at" required></datetime>
           </div>
         </div>
 
         <div class="row">
           <div class="col-md-2 mb-3">
-            <input type="text" class="form-control" v-model="entry.details[1].city" placeholder="Drop off City" required>
+            <input type="number" class="form-control" placeholder="Pick up Postal code" required v-model="entry.details[1].postal" @keyup="entry.details[1].city = getCity($event.target.value)"/>
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div class="col-md-2 mb-3">
+            <select class="custom-select" required v-model="entry.details[1].city" @change="entry.details[1].postal = getPostal($event.target.value)">
+              <option value disabled>Pick Up City</option>
+              <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
+            </select>
+          </div>
+
+          <div class="col-md-2 mb-3">
             <input type="text" class="form-control" v-model="entry.details[1].street" placeholder="Drop off Street" required>
           </div>
 
@@ -61,7 +75,7 @@
             <input type="text" class="form-control" v-model="entry.details[1].phone" placeholder="Drop off Phone (Optional)">
           </div>
 
-          <div class="col-md-3 mb-3">
+          <div class="col-md-2 mb-3">
             <datetime type="datetime" placeholder="Drop off time" input-class="form-control" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[1].scheduled_at" required></datetime>
           </div>
         </div>
@@ -82,6 +96,7 @@ export default {
         user_id: '',
         details: [
           {
+            postal: '',
             city: '',
             street: '',
             street_number: '',
@@ -90,6 +105,7 @@ export default {
             scheduled_at: '',
           },
           {
+            postal: '',
             city: '',
             street: '',
             street_number: '',
