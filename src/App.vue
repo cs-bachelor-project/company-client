@@ -65,6 +65,8 @@ export default {
         let action = data.action == 'pick' ? 'picked up' : 'dropped off'
 
         this.$toast.success(`${data.person_name} ${action}`)
+      }).listen('.cancelled', data => {
+        this.$toast.info(`${data.person_name} was cancelled`)
       })
     }
   },

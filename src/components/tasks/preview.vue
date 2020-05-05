@@ -13,6 +13,10 @@
 
       <form @submit.prevent="updateTask">
         <table class="table table-hover" v-if="entry">
+          <tr v-if="entry.cancellation != null">
+            <th>The driver cancelled this task</th>
+            <td>{{entry.cancellation.reason}}</td>
+          </tr>
           <tr v-if="entry.details.find(elm => elm.action == 'pick').completed_at != null">
             <th>Picked up at</th>
             <td>{{entry.details.find(elm => elm.action == 'pick').completed_at}}</td>
@@ -145,7 +149,7 @@ export default {
       this.meta.ready = false
 
       try {
-        let res = await this.$axios.get(`companies/tasks/${this.$route.params.id}?include=details`)
+        let res = await this.$axios.get(`companies/tasks/${this.$route.params.id}?include=details,cancellation`)
         this.entry = res.data
 
         let driverRes = await this.$axios.get('companies/drivers')

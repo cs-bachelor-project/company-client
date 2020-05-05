@@ -1,14 +1,17 @@
 <template>
   <div>
     <h4 class="mb-3">
-      <a href="" @click.prevent="loadData(true)" v-if="completed != 'all'">All Tasks</a>
+      <a href="" @click.prevent="loadData(true)" v-if="status != 'all'">All Tasks</a>
       <span v-else>All Tasks</span> |
 
-      <a href="" @click.prevent="loadUncompleted" v-if="completed != 'uncompleted'">Uncompleted Tasks</a>
+      <a href="" @click.prevent="loadUncompleted" v-if="status != 'uncompleted'">Uncompleted Tasks</a>
       <span v-else>Uncompleted Tasks</span> |
       
-      <a href="" @click.prevent="loadCompleted" v-if="completed != 'completed'">Completed Tasks</a>
-      <span v-else>Completed Tasks</span>
+      <a href="" @click.prevent="loadCompleted" v-if="status != 'completed'">Completed Tasks</a>
+      <span v-else>Completed Tasks</span> |
+      
+      <a href="" @click.prevent="loadCancelled" v-if="status != 'cancelled'">Cancelled Tasks</a>
+      <span v-else>Cancelled Tasks</span>
 
       <span class="float-right"><router-link :to="{name: 'task-new'}">New Task</router-link></span>
     </h4>
@@ -63,7 +66,7 @@ export default {
       return {
           entries: [],
           q: '',
-          completed: 'uncompleted',
+          status: 'uncompleted',
       }
   },
   created() {
@@ -75,11 +78,11 @@ export default {
       this.q = ''
 
       if(all == true) {
-        this.completed = 'all'
+        this.status = 'all'
       }
 
       try {
-        let res = await this.$axios.get(`companies/tasks?include=details&status=${this.completed}`)
+        let res = await this.$axios.get(`companies/tasks?include=details&status=${this.status}`)
 
         this.entries = res.data.data
         this.meta.totalPages = res.data.meta.last_page
@@ -109,7 +112,7 @@ export default {
           return this.loadData()
         }
 
-        let res = await this.$axios.get(`companies/tasks/search?include=details&status=${this.completed}&q=${this.q}`)
+        let res = await this.$axios.get(`companies/tasks/search?include=details&status=${this.status}&q=${this.q}`)
 
         this.entries = res.data.data
         this.meta.totalPages = res.data.meta.last_page
@@ -121,11 +124,15 @@ export default {
       }
     },
     loadCompleted() {
-      this.completed = 'completed'
+      this.status = 'completed'
       this.loadData()
     },
     loadUncompleted() {
-      this.completed = 'uncompleted'
+      this.status = 'uncompleted'
+      this.loadData()
+    },
+    loadCancelled() {
+      this.status = 'cancelled'
       this.loadData()
     },
   }

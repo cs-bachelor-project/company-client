@@ -2,17 +2,19 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import axios from 'axios'
-import moment from 'moment';
+import moment from 'moment'
 import decode from 'jwt-decode'
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Datetime } from 'vue-datetime'
 import 'vue-datetime/dist/vue-datetime.css'
-import Toast, { TYPE } from "vue-toastification"
-import "vue-toastification/dist/index.css"
-import cityData from "./assets/city.json"
+import Toast, { TYPE } from 'vue-toastification'
+import 'vue-toastification/dist/index.css'
+import cityData from './assets/city.json'
 import Echo from 'laravel-echo'
 window.io = require('socket.io-client')
+
+Vue.config.productionTip = false
 
 const AUTH_TOKEN_KEY = 'token'
 
@@ -33,15 +35,18 @@ Vue.prototype.$axios = axios.create({
 
 Vue.use(Toast, {
   toastDefaults: {
-      [TYPE.ERROR]: {
-          timeout: 5000,
-      },
-      [TYPE.SUCCESS]: {
-          timeout: 3000,
-      }    
+    [TYPE.ERROR]: {
+      timeout: 5000,
+    },
+    [TYPE.INFO]: {
+      timeout: 4000,
+    },
+    [TYPE.SUCCESS]: {
+      timeout: 3000,
+    }
   },
-});
-Vue.component('datetime', Datetime);
+})
+Vue.component('datetime', Datetime)
 
 Vue.prototype.$axios.defaults.headers.common['Authorization'] = `Bearer ${localStorage.getItem(AUTH_TOKEN_KEY)}`
 
@@ -49,10 +54,10 @@ Vue.mixin({
   data: function () {
     return {
       get moment() {
-        return moment;
+        return moment
       },
       get cities() {
-        return cityData;
+        return cityData
       },
       meta: {
         currentPage: 1,
@@ -70,7 +75,7 @@ Vue.mixin({
       return Object.keys(this.cities).find(k => this.cities[k] == postal)
     },
     utcToLocal: function (time) {
-      return this.moment.utc(time).local();
+      return this.moment.utc(time).local()
     },
     logout: function () {
       this.clearAuthToken()
@@ -127,7 +132,7 @@ Vue.mixin({
   }
 })
 
-Vue.component('loading', require('./components/loading.vue').default);
+Vue.component('loading', require('./components/loading.vue').default)
 
 new Vue({
   router,
