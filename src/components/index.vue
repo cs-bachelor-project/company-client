@@ -165,7 +165,7 @@ export default {
       }
     },
     async getCompanyInfo() {
-      if (this.data.company.cvr.length < 8) {
+      if (this.data.company.cvr.length != 8) {
         return
       }
 
