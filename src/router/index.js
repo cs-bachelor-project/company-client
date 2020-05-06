@@ -8,14 +8,15 @@ const routes = [
 
   { path: '/login', name: 'login', component: () => import(/* webpackChunkName: "login" */ '../components/auth/login.vue'), meta: { requiresVisitor: true }, },
   { path: '/settings', name: 'settings', component: () => import(/* webpackChunkName: "settings" */ '../components/auth/settings.vue'), meta: { requiresAuth: true }, },
+  { path: '/subscriptions', name: 'subscriptions', component: () => import(/* webpackChunkName: "subscriptions" */ '../components/auth/subscriptions.vue'), meta: { requiresAuth: true }, },
 
-  { path: '/users', name: 'users', component: () => import(/* webpackChunkName: "users" */ '../components/users/index.vue'), meta: { requiresAuth: true }, },
-  { path: '/users/new', name: 'user-new', component: () => import(/* webpackChunkName: "user-new" */ '../components/users/new.vue'), meta: { requiresAuth: true }, },
-  { path: '/users/:id', name: 'user-preview', component: () => import('../components/users/preview.vue'), meta: { requiresAuth: true }, },
+  { path: '/users', name: 'users', component: () => import(/* webpackChunkName: "users" */ '../components/users/index.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
+  { path: '/users/new', name: 'user-new', component: () => import(/* webpackChunkName: "user-new" */ '../components/users/new.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
+  { path: '/users/:id', name: 'user-preview', component: () => import('../components/users/preview.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
 
-  { path: '/tasks', name: 'tasks', component: () => import(/* webpackChunkName: "tasks" */ '../components/tasks/index.vue'), meta: { requiresAuth: true }, },
-  { path: '/tasks/new', name: 'task-new', component: () => import(/* webpackChunkName: "task-new" */ '../components/tasks/new.vue'), meta: { requiresAuth: true }, },
-  { path: '/tasks/:id', name: 'task-preview', component: () => import('../components/tasks/preview.vue'), meta: { requiresAuth: true }, },
+  { path: '/tasks', name: 'tasks', component: () => import(/* webpackChunkName: "tasks" */ '../components/tasks/index.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
+  { path: '/tasks/new', name: 'task-new', component: () => import(/* webpackChunkName: "task-new" */ '../components/tasks/new.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
+  { path: '/tasks/:id', name: 'task-preview', component: () => import('../components/tasks/preview.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
 ]
 
 const router = new VueRouter({
@@ -26,6 +27,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   let loggedIn = new Vue().isLoggedIn()
+  let userInfo = new Vue().getUserInfo()
 
   if (to.matched.some(record => record.meta.requiresAuth)) {
     if (!loggedIn) {
@@ -45,6 +47,16 @@ router.beforeEach((to, from, next) => {
     }
   } else {
     next()
+  }
+  
+  if (to.matched.some(record => record.meta.requiresSubscription)) {
+    if (userInfo.stripe_id == null) {
+      next({
+        name: 'subscriptions',
+      })
+    } else {
+      next()
+    }
   }
 })
 

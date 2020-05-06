@@ -11,15 +11,15 @@
             <li class="nav-item">
               <router-link :to="{name: 'index'}" class="nav-link">Home</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="isLoggedIn()">
               <router-link :to="{name: 'users'}" class="nav-link">Users</router-link>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" v-if="isLoggedIn()">
               <router-link :to="{name: 'tasks'}" class="nav-link">Tasks</router-link>
             </li>
           </ul>
 
-          <form class="w-100 px-1" @submit.prevent="sendMsg">
+          <form class="w-100 px-1" @submit.prevent="sendMsg" v-if="isLoggedIn()">
             <input type="text" class="form-control" placeholder="Send a message to all online drivers" v-model="msg" />
           </form>
 
@@ -29,6 +29,9 @@
             </li>
             <li class="nav-item" v-if="isLoggedIn()">
               <router-link :to="{name: 'settings'}" class="nav-link">Settings</router-link>
+            </li>
+            <li class="nav-item" v-if="isLoggedIn()">
+              <router-link :to="{name: 'subscriptions'}" class="nav-link">Subscription</router-link>
             </li>
             <li class="nav-item" v-if="isLoggedIn()">
               <a href class="nav-link" @click.prevent="logout">Logout</a>
