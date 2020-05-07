@@ -18,11 +18,11 @@
         </tr>
         <tr>
           <th scope="col">Name</th>
-          <td><input type="text" class="form-control" v-model="entry.name" @change="changeName" :disabled="!hasAnyRole(['admin'])" required></td>
+          <td><input type="text" class="form-control" v-model="entry.name" @change="changeInfo" :disabled="!hasAnyRole(['admin'])" required></td>
         </tr>
         <tr>
           <th scope="col">Email</th>
-          <td><input type="text" class="form-control" v-model="entry.email" @change="changeEmail" :disabled="!hasAnyRole(['admin'])" required></td>
+          <td><input type="text" class="form-control" v-model="entry.email" @change="changeInfo" :disabled="!hasAnyRole(['admin'])" required></td>
         </tr>
         <tr>
           <th scope="col">Roles</th>
@@ -90,8 +90,8 @@ export default {
         this.$router.push({name: 'users'})
       }
     },
-    async changeName() {
-      if (this.entry.name == ''){
+    async changeInfo() {
+      if (this.entry.name == '' || this.entry.email == ''){
         return
       }
 
@@ -100,24 +100,6 @@ export default {
       try {
         let res = await this.$axios.patch(`companies/users/${this.$route.params.id}`, {
           name: this.entry.name,
-        })
-
-        this.$toast.clear(loading)
-        this.$toast.success(res.data.message)
-      } catch (error) {
-        this.$toast.clear(loading)
-        error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
-      }
-    },
-    async changeEmail() {
-      if (this.entry.email == ''){
-        return
-      }
-
-      let loading = this.$toast('Loading...', {position: 'top-left'})
-
-      try {
-        let res = await this.$axios.patch(`companies/users/${this.$route.params.id}`, {
           email: this.entry.email,
         })
 
