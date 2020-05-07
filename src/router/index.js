@@ -4,7 +4,10 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
-  { path: '/', name: 'index', component: () => import(/* webpackChunkName: "index" */ '../components/index.vue'), meta: { requiresVisitor: true }, },
+  { path: '/', name: 'index', component: () => import(/* webpackChunkName: "index" */ '../components/index.vue') },
+  
+  { path: '/pricing', name: 'pricing', component: () => import(/* webpackChunkName: "pricing" */ '../components/pricing.vue'), meta: { requiresVisitor: true }, },
+  { path: '/register', name: 'register', component: () => import(/* webpackChunkName: "register" */ '../components/auth/register.vue'), meta: { requiresVisitor: true }, },
 
   { path: '/login', name: 'login', component: () => import(/* webpackChunkName: "login" */ '../components/auth/login.vue'), meta: { requiresVisitor: true }, },
   { path: '/settings', name: 'settings', component: () => import(/* webpackChunkName: "settings" */ '../components/auth/settings.vue'), meta: { requiresAuth: true }, },

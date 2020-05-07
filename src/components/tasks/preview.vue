@@ -31,16 +31,16 @@
           </tr>
           <tr>
             <th scope="col">Passenger Name</th>
-            <td><input type="text" class="form-control" v-model="entry.person_name" required></td>
+            <td><input type="text" class="form-control" v-model="entry.person_name" required :disabled="isDisabled"></td>
           </tr>
           <tr>
             <th scope="col">Note</th>
-            <td><input type="text" class="form-control" v-model="entry.note" maxlength="255"></td>
+            <td><input type="text" class="form-control" v-model="entry.note" maxlength="255" :disabled="isDisabled"></td>
           </tr>
           <tr>
             <th scope="col">Driver</th>
             <td>
-              <select class="custom-select" v-model="entry.user_id">
+              <select class="custom-select" v-model="entry.user_id" :disabled="isDisabled">
                 <option value="">Choose Driver</option>
                 <option :value="driver.id" v-for="driver in drivers" :key="driver.id">{{driver.name}}</option>
               </select>
@@ -55,31 +55,31 @@
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.details.find(elm => elm.action == 'pick').postal" @keyup="entry.details.find(elm => elm.action == 'pick').city = getCity($event.target.value)"/>
+                  <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.details.find(elm => elm.action == 'pick').postal" @keyup="entry.details.find(elm => elm.action == 'pick').city = getCity($event.target.value)" :disabled="isDisabled"/>
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <select class="custom-select" required v-model="entry.details.find(elm => elm.action == 'pick').city" @change="entry.details.find(elm => elm.action == 'pick').postal = getPostal($event.target.value)">
+                  <select class="custom-select" required v-model="entry.details.find(elm => elm.action == 'pick').city" @change="entry.details.find(elm => elm.action == 'pick').postal = getPostal($event.target.value)" :disabled="isDisabled">
                     <option value disabled>City</option>
                     <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
                   </select>
                 </div>
 
                 <div class="col-md-4 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street" placeholder="Street" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street" placeholder="Street" required :disabled="isDisabled">
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street_number" placeholder="Street number" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').street_number" placeholder="Street number" required :disabled="isDisabled">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-5 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').phone" placeholder="Phone">
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').phone" placeholder="Phone" :disabled="isDisabled">
                 </div>
                 <div class="col-md-7 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').scheduled_at" title="Time in UTC" placeholder="Time" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'pick').scheduled_at" title="Time in UTC" placeholder="Time" required :disabled="isDisabled">
                 </div>
               </div>
             </td>
@@ -93,38 +93,38 @@
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.details.find(elm => elm.action == 'drop').postal" @keyup="entry.details.find(elm => elm.action == 'drop').city = getCity($event.target.value)"/>
+                  <input type="number" class="form-control" placeholder="Postal code" required v-model="entry.details.find(elm => elm.action == 'drop').postal" @keyup="entry.details.find(elm => elm.action == 'drop').city = getCity($event.target.value)" :disabled="isDisabled"/>
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <select class="custom-select" required v-model="entry.details.find(elm => elm.action == 'drop').city" @change="entry.details.find(elm => elm.action == 'drop').postal = getPostal($event.target.value)">
+                  <select class="custom-select" required v-model="entry.details.find(elm => elm.action == 'drop').city" @change="entry.details.find(elm => elm.action == 'drop').postal = getPostal($event.target.value)" :disabled="isDisabled">
                     <option value disabled>City</option>
                     <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
                   </select>
                 </div>
 
                 <div class="col-md-4 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street" placeholder="Street" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street" placeholder="Street" required :disabled="isDisabled">
                 </div>
 
                 <div class="col-md-2 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street_number" placeholder="Street number" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').street_number" placeholder="Street number" required :disabled="isDisabled">
                 </div>
               </div>
 
               <div class="row">
                 <div class="col-md-5 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').phone" placeholder="Phone">
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').phone" placeholder="Phone" :disabled="isDisabled">
                 </div>
                 <div class="col-md-7 mb-3">
-                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').scheduled_at" title="Time in UTC" placeholder="Time" required>
+                  <input type="text" class="form-control" v-model="entry.details.find(elm => elm.action == 'drop').scheduled_at" title="Time in UTC" placeholder="Time" required :disabled="isDisabled">
                 </div>
               </div>
             </td>
           </tr>
           <tr>
             <td colspan="2">
-              <button class="btn btn-primary btn-lg btn-block" type="submit">Update Task</button>
+              <button class="btn btn-primary btn-lg btn-block" type="submit" :disabled="isDisabled">Update Task</button>
             </td>
           </tr>
         </table>
@@ -192,5 +192,10 @@ export default {
       }
     },
   },
+  computed: {
+    isDisabled() {
+      return this.entry.cancellation != null || (this.entry.details[0].completed_at != null && this.entry.details[1].completed_at != null)
+    }
+  }
 }
 </script>

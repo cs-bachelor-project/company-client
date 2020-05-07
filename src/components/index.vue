@@ -1,123 +1,84 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-md-12">
-        <form class="needs-validation" @submit.prevent="register">
-          <h4 class="mb-0">Choose a subscription plan</h4>
+      <div class="col-sm-12">
+        <form @submit.prevent="createTask">
           <div class="row">
-            <div class="col-md-4 mb-5">
-              <div class="card mb-5">
-                <div class="card-header">
-                  <h4 class="my-0">Freemium</h4>
-                </div>
-                <div class="card-body">
-                  <h1 class="card-title">Free</h1>
-                  <ul class="list-unstyled">
-                    <li>Unlimited tasks</li>
-                    <li>Unlimited administrators and managers</li>
-                    <li>Up to 5 drivers</li>
-                  </ul>
-                  <button type="button" class="btn btn-lg btn-block btn-primary">Choose</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-5">
-              <div class="card mb-5">
-                <div class="card-header">
-                  <h4 class="my-0">Lite</h4>
-                </div>
-                <div class="card-body">
-                  <h1 class="card-title">
-                    $15
-                    <small class="text-muted">/ mo</small>
-                  </h1>
-                  <ul class="list-unstyled">
-                    <li>Unlimited tasks</li>
-                    <li>Unlimited administrators and managers</li>
-                    <li>Up to 15 drivers</li>
-                  </ul>
-                  <button type="button" class="btn btn-lg btn-block btn-primary">Choose</button>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-5">
-              <div class="card mb-5">
-                <div class="card-header">
-                  <h4 class="my-0">Premium</h4>
-                </div>
-                <div class="card-body">
-                  <h1 class="card-title pricing-card-title">
-                    $29
-                    <small class="text-muted">/ mo</small>
-                  </h1>
-                  <ul class="list-unstyled">
-                    <li>Unlimited tasks</li>
-                    <li>Unlimited administrators and managers</li>
-                    <li>Up to 50 drivers</li>
-                  </ul>
-                  <button type="button" class="btn btn-lg btn-block btn-primary">Choose</button>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <h4 class="mb-3">Company Information</h4>
-          <div class="row">
-            <div class="col-md-3 mb-3">
-              <input type="number" class="form-control" placeholder="CVR" required v-model="data.company.cvr" @keyup="getCompanyInfo"/>
-            </div>
-            <div class="col-md-9 mb-3">
-              <input type="text" class="form-control" placeholder="Company Name" required v-model="data.company.name" />
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-md-3 mb-3">
-              <select class="custom-select" required v-model="data.company.country">
-                <option value disabled  >Country</option>
-                <option>Denmark</option>
+            <div class="col-sm-3 mb-3">
+              <select class="custom-select" v-model="entry.company_id" required>
+                  <option value="">Choose Company</option>
+                  <option :value="company.id" v-for="company in companies" :key="company.id">{{company.name}}</option>
               </select>
             </div>
-            <div class="col-md-2 mb-3">
-              <input type="number" class="form-control" placeholder="Postal code" required v-model="data.company.postal" @keyup="data.company.city = getCity($event.target.value)"/>
+            
+            <div class="col-sm-3 mb-3">
+              <input type="text" class="form-control" placeholder="Passenger Name" v-model="entry.person_name" required />
             </div>
-            <div class="col-md-2 mb-3">
-              <select class="custom-select" required v-model="data.company.city" @change="data.company.postal = getPostal($event.target.value)">
-                <option value disabled>City</option>
+
+            <div class="col-sm-6 mb-3">
+              <input type="text" class="form-control" v-model="entry.note" placeholder="Note (optional)" maxlength="255">
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-sm-2 mb-3">
+              <input type="number" class="form-control" placeholder="Pick up Postal code" required v-model="entry.details[0].postal" @keyup="entry.details[0].city = getCity($event.target.value)"/>
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <select class="custom-select" required v-model="entry.details[0].city" @change="entry.details[0].postal = getPostal($event.target.value)">
+                <option value disabled>Pick Up City</option>
                 <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
               </select>
             </div>
-            <div class="col-md-3 mb-3">
-              <input type="text" class="form-control" placeholder="Street" required v-model="data.company.street" />
+
+            <div class="col-sm-2 mb-3">
+              <input type="text" class="form-control" v-model="entry.details[0].street" placeholder="Pick up Street" required>
             </div>
-            <div class="col-md-2 mb-3">
-              <input type="text" class="form-control" placeholder="Street No." required v-model="data.company.street_number" />
+
+            <div class="col-sm-2 mb-3">
+              <input type="text" class="form-control" v-model="entry.details[0].street_number" placeholder="Pick up Street number" required>
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <input type="text" class="form-control" v-model="entry.details[0].phone" placeholder="Pick up Phone (Optional)">
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <datetime type="datetime" placeholder="Pick up time" input-class="form-control" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[0].scheduled_at" required></datetime>
             </div>
           </div>
 
-          <h4 class="mb-3">Personal Information</h4>
           <div class="row">
-            <div class="col-md-6 mb-3">
-              <input type="text" class="form-control" placeholder="Full Name" required v-model="data.user.name" />
+            <div class="col-sm-2 mb-3">
+              <input type="number" class="form-control" placeholder="Pick up Postal code" required v-model="entry.details[1].postal" @keyup="entry.details[1].city = getCity($event.target.value)"/>
             </div>
 
-            <div class="col-md-6 mb-3">
-              <input type="email" class="form-control" placeholder="Email address" required v-model="data.user.email" />
+            <div class="col-sm-2 mb-3">
+              <select class="custom-select" required v-model="entry.details[1].city" @change="entry.details[1].postal = getPostal($event.target.value)">
+                <option value disabled>Pick Up City</option>
+                <option :value="city" v-for="(zip, city) in cities" :key="zip">{{city}}</option>
+              </select>
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <input type="text" class="form-control" v-model="entry.details[1].street" placeholder="Drop off Street" required>
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <input type="text" class="form-control" v-model="entry.details[1].street_number" placeholder="Drop off Street number" required>
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <input type="text" class="form-control" v-model="entry.details[1].phone" placeholder="Drop off Phone (Optional)">
+            </div>
+
+            <div class="col-sm-2 mb-3">
+              <datetime type="datetime" placeholder="Drop off time" input-class="form-control" format="yyyy-LL-dd hh:mm:ss" v-model="entry.details[1].scheduled_at" required></datetime>
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-md-6 mb-3">
-              <input type="password" class="form-control" placeholder="Password" required v-model="data.user.password" />
-            </div>
-
-            <div class="col-md-6 mb-1">
-              <input type="password" class="form-control" placeholder="Password Confirmation" required v-model="data.user.password_confirmation" />
-            </div>
-          </div>
-
-          <hr class="mb-3" />
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Book a ride</button>
         </form>
       </div>
     </div>
@@ -128,60 +89,62 @@
 export default {
   data() {
     return {
-      cities: {},
-      errors: {},
-      data: {
-        company: {
-          name: "",
-          country: "Denmark",
-          postal: "",
-          city: "",
-          street: "",
-          street_number: ""
-        },
-        user: {
-          name: "",
-          email: "",
-          password: "",
-          password_confirmation: ""
-        }
-      }
-    }
+      entry: {
+        company_id: '',
+        person_name: '',
+        note: '',
+        details: [
+          {
+            postal: '',
+            city: '',
+            street: '',
+            street_number: '',
+            phone: '',
+            action: 'pick',
+            scheduled_at: '',
+          },
+          {
+            postal: '',
+            city: '',
+            street: '',
+            street_number: '',
+            phone: '',
+            action: 'drop',
+            scheduled_at: '',
+          }
+        ],
+      },
+      companies: []
+    };
+  },
+  created() {
+    this.loadData();
   },
   methods: {
-    async register() {
+    async loadData() {
+      try {
+        let res = await this.$axios.get('companies');
+
+        this.companies = res.data
+      } catch (error) {
+          error.response.data.errors.forEach(e =>
+          this.$toast.error(e, { timeout: false })
+        );
+      }
+    },
+    async createTask() {
       let loading = this.$toast('Loading...', {position: 'top-left'})
 
       try {
-        let res = await this.$axios.post("auth/register", this.data)
+        let res = await this.$axios.post('tasks', this.entry);
 
         this.$toast.clear(loading)
         this.$toast.success(res.data.message)
-
-        this.$router.push({name: 'login'})
       } catch (error) {
         this.$toast.clear(loading)
         error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
       }
-    },
-    async getCompanyInfo() {
-      if (this.data.company.cvr.length != 8) {
-        return
-      }
-
-      try {
-        let res = await this.$axios.get(`https://cvrapi.dk/api?search=${this.data.company.cvr}&country=dk`)
-
-        this.data.company.name = res.data.name
-        this.data.company.postal = res.data.zipcode
-        this.data.company.city = res.data.city
-        this.data.company.street = res.data.address.split(/^(\D*)(.*)/)[1]
-        this.data.company.street_number = res.data.address.split(/^(\D*)(.*)/)[2]
-
-      } catch (error) {
-        return 
-      }
-    },
+    }
   }
-}
+};
 </script>

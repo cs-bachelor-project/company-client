@@ -2,15 +2,12 @@
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
       <div class="container">
-        <a class="navbar-brand" href="#">Fixed navbar</a>
+        <router-link :to="{name: 'index'}" class="navbar-brand">Bachelor Project</router-link>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarCollapse">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-              <router-link :to="{name: 'index'}" class="nav-link">Home</router-link>
-            </li>
             <li class="nav-item" v-if="isLoggedIn()">
               <router-link :to="{name: 'users'}" class="nav-link">Users</router-link>
             </li>
@@ -23,7 +20,13 @@
             <input type="text" class="form-control" placeholder="Send a message to all online drivers" v-model="msg" />
           </form>
 
-          <ul class="navbar-nav float-right">
+          <ul class="navbar-nav float-lg-right">
+            <li class="nav-item" v-if="!isLoggedIn()">
+              <router-link :to="{name: 'pricing'}" class="nav-link">Pricing</router-link>
+            </li>
+            <li class="nav-item" v-if="!isLoggedIn()">
+              <router-link :to="{name: 'register'}" class="nav-link">Register</router-link>
+            </li>
             <li class="nav-item" v-if="!isLoggedIn()">
               <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
             </li>
@@ -70,6 +73,8 @@ export default {
         this.$toast.success(`${data.person_name} ${action}`)
       }).listen('.cancelled', data => {
         this.$toast.info(`${data.person_name} was cancelled`)
+      }).listen('.new', data => {
+        this.$toast.info(`New task by ${data.person_name}`)
       })
     }
   },

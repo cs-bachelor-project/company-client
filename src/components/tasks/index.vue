@@ -18,7 +18,7 @@
 
     <table class="table">
       <tr>
-        <td colspan="6"><input type="text" @keyup="search" class="form-control" placeholder="Search by Passenger name or Note" v-model="q"></td>
+        <td colspan="6"><input type="text" @keyup="search" class="form-control" placeholder="Search by passenger name, note, postal code, city, street or phone number" v-model="q"></td>
       </tr>
     </table>
 

@@ -37,7 +37,7 @@ export default {
         this.setAuthToken(res.data.access_token)
 
         this.$toast.clear(loading)
-        this.$router.push({name: 'index'})
+        this.$router.push({name: 'users'})
       } catch (error) {
         this.$toast.clear(loading)
         this.$toast.error(error.response.data.message)
