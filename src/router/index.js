@@ -12,6 +12,7 @@ const routes = [
   { path: '/login', name: 'login', component: () => import(/* webpackChunkName: "login" */ '../components/auth/login.vue'), meta: { requiresVisitor: true }, },
   { path: '/settings', name: 'settings', component: () => import(/* webpackChunkName: "settings" */ '../components/auth/settings.vue'), meta: { requiresAuth: true }, },
   { path: '/subscriptions', name: 'subscriptions', component: () => import(/* webpackChunkName: "subscriptions" */ '../components/auth/subscriptions.vue'), meta: { requiresAuth: true }, },
+  { path: '/stats', name: 'stats', component: () => import(/* webpackChunkName: "stats" */ '../components/stats/index.vue'), meta: { requiresAuth: true }, },
 
   { path: '/users', name: 'users', component: () => import(/* webpackChunkName: "users" */ '../components/users/index.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
   { path: '/users/new', name: 'user-new', component: () => import(/* webpackChunkName: "user-new" */ '../components/users/new.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },

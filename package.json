@@ -16,6 +16,7 @@
     "jwt-decode": "^2.2.0",
     "laravel-echo": "^1.7.0",
     "luxon": "^1.23.0",
+    "mapbox-gl": "^1.10.0",
     "moment": "^2.24.0",
     "popper.js": "^1.16.1",
     "socket.io-client": "^2.3.0",
