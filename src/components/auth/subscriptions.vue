@@ -164,7 +164,6 @@ export default {
                 card: card
               })
               .then(paymentMethod => {
-                console.log(paymentMethod);
                 this.data.payment = paymentMethod.paymentMethod;
 
                 this.subscribe();

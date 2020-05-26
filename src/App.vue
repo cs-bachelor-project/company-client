@@ -97,7 +97,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style>
 .card {
   top: 50px;
 }
