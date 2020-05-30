@@ -58,8 +58,14 @@
             </div>
           </div>
 
+          <div class="row">
+            <div class="col-sm-12 my-3">
+              <input type="checkbox" v-model="agreed"> I agree to the terms of service and privacy policy
+            </div>
+          </div>
+
           <hr class="mb-3" />
-          <button class="btn btn-primary btn-lg btn-block" type="submit">Create an account</button>
+          <button class="btn btn-primary btn-lg btn-block" type="submit" :disabled="!agreed">Create an account</button>
         </form>
       </div>
     </div>
@@ -70,6 +76,7 @@
 export default {
   data() {
     return {
+      agreed: false,
       cities: {},
       errors: {},
       data: {

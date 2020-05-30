@@ -78,13 +78,7 @@
             </div>
           </div>
 
-          <div class="row">
-            <div class="col-sm-12 my-3">
-              <input type="checkbox" v-model="agreed"> I agree to the terms of service and privacy policy
-            </div>
-          </div>
-
-          <button class="btn btn-primary btn-lg btn-block" type="submit" :disabled="!agreed">Book a ride</button>
+          <button class="btn btn-primary btn-lg btn-block" type="submit">Book a ride</button>
         </form>
       </div>
     </div>
@@ -121,7 +115,6 @@ export default {
         ],
       },
       companies: [],
-      agreed: false,
     };
   },
   created() {
