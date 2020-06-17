@@ -140,6 +140,7 @@ export default {
 
         this.$toast.clear(loading)
         this.$toast.success(res.data.message)
+        this.entry = {company_id: '', person_name: '', note: '', details: [{ postal: '', city: '', street: '', street_number: '', phone: '', action: 'pick', scheduled_at: '', }, { postal: '', city: '', street: '', street_number: '', phone: '', action: 'drop', scheduled_at: '',}],}
       } catch (error) {
         this.$toast.clear(loading)
         error.response.data.errors.forEach(e => this.$toast.error(e, {timeout: false}))
