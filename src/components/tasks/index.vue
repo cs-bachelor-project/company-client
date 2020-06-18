@@ -12,8 +12,12 @@
       
       <a href="" @click.prevent="loadCancelled" v-if="status != 'cancelled'">Cancelled Tasks</a>
       <span v-else>Cancelled Tasks</span>
+      
 
-      <span class="float-right"><router-link :to="{name: 'task-new'}">New Task</router-link></span>
+      <span class="float-right">
+        <router-link :to="{name: 'statistics'}"><svg class="bi bi-bar-chart" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 11H2v3h2v-3zm5-4H7v7h2V7zm5-5h-2v12h2V2zm-2-1a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1h-2zM6 7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7zm-5 4a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3a1 1 0 0 1-1 1H2a1 1 0 0 1-1-1v-3z"/></svg></router-link> |
+        <router-link :to="{name: 'task-new'}">New Task</router-link>
+      </span>
     </h4>
 
     <table class="table">

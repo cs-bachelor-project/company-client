@@ -20,6 +20,8 @@ const routes = [
   { path: '/tasks', name: 'tasks', component: () => import(/* webpackChunkName: "tasks" */ '../components/tasks/index.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
   { path: '/tasks/new', name: 'task-new', component: () => import(/* webpackChunkName: "task-new" */ '../components/tasks/new.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
   { path: '/tasks/:id', name: 'task-preview', component: () => import('../components/tasks/preview.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
+
+  { path: '/statistics', name: 'statistics', component: () => import(/* webpackChunkName: "statistics" */ '../components/statistics/index.vue'), meta: { requiresAuth: true, requiresSubscription: true, }, },
 ]
 
 const router = new VueRouter({
