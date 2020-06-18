@@ -10,12 +10,14 @@ COPY . .
 
 RUN npm run build
 
-FROM node:lts-alpine as production-stage
+FROM nginx:stable-alpine as production-stage
 
-COPY --from=build-stage /tmp/dist /company-client
+COPY --from=build-stage /tmp/dist /usr/share/nginx/html
 
-WORKDIR ./company-client/
+RUN rm /etc/nginx/conf.d/default.conf
 
-RUN npm install -g http-server
+COPY nginx.conf /etc/nginx/conf.d
 
-CMD http-server . -a=0.0.0.0 -p=8080
+EXPOSE 8080
+
+CMD ["nginx", "-g", "daemon off;"]
