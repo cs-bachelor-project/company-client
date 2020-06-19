@@ -27,8 +27,12 @@
             <li class="nav-item" v-if="!isLoggedIn()">
               <router-link :to="{name: 'register'}" class="nav-link">Register</router-link>
             </li>
-            <li class="nav-item" v-if="!isLoggedIn()">
-              <router-link :to="{name: 'login'}" class="nav-link">Login</router-link>
+            <li class="nav-item dropdown" v-if="!isLoggedIn()">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Login</a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <router-link :to="{name: 'login'}" class="dropdown-item">Company Login</router-link>
+                <a class="dropdown-item" href="http://driver.localhost">Driver Login</a>
+              </div>
             </li>
             <li class="nav-item" v-if="isLoggedIn()">
               <router-link :to="{name: 'settings'}" class="nav-link">Settings</router-link>
