@@ -43,20 +43,26 @@ export default {
     return {
       entries: [],
       calculations: [],
-      from: '',
-      to: ''
+      from: null,
+      to: null
     };
   },
   created() {
     this.loadData();
 
     window.Echo.private(`company.${this.getUserInfo().company_id}.info`).listen(".cancelled", data => {
-        let i = this.entries.findIndex(elm => elm.name == data.cancellation.reason);
-
         let date = data.cancellation.created_at;
 
-        if (!this.moment(date).isBetween(this.from, this.to)) {
-          return
+        if (this.from && this.to) {
+          if (!this.moment(date).isBetween(this.from, this.to)) {
+            return
+          }
+        }
+
+        let i = -1;
+        
+        if (this.entries.length){
+          i = this.entries.findIndex(elm => elm.name == data.cancellation.reason);
         }
 
         if (i != -1) {
@@ -91,7 +97,6 @@ export default {
         this.entries = res.data;
 
         this.calcPercentage();
-
 
         this.meta.ready = true;
       } catch (error) {
