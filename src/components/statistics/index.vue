@@ -12,9 +12,18 @@
               <input type="submit" value="Update" class="btn btn-primary"></div>
             </form>
         </div>
+
         <div class="row">
           <div class="col-md-12 mb-3">
             <line-chart :data="entries" :download="true" :messages="{empty: 'We didn\'t find anything - just empty space.'}" />
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 mb-3">
+            <ul>
+              <li v-for="(elm, index) in calculations" :key="index"><strong>{{elm.name}}</strong>: {{elm.action}} with {{elm.difference}} ({{elm.percentage}}%)</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -33,6 +42,7 @@ export default {
   data() {
     return {
       entries: [],
+      calculations: [],
       from: '',
       to: ''
     };
@@ -44,6 +54,10 @@ export default {
         let i = this.entries.findIndex(elm => elm.name == data.cancellation.reason);
 
         let date = data.cancellation.created_at;
+
+        if (!this.moment(date).isBetween(this.from, this.to)) {
+          return
+        }
 
         if (i != -1) {
           if (this.entries[i].data[date] != undefined) {
@@ -63,6 +77,8 @@ export default {
         let tmp = this.entries;
         this.entries = [];
         this.entries = tmp;
+
+        this.calcPercentage();
       }
     );
   },
@@ -73,6 +89,9 @@ export default {
       try {
         let res = await this.$axios.get("companies/statistics/tasks");
         this.entries = res.data;
+
+        this.calcPercentage();
+
 
         this.meta.ready = true;
       } catch (error) {
@@ -85,12 +104,47 @@ export default {
       try {
         let res = await this.$axios.get(`companies/statistics/tasks?from=${this.from}&to=${this.to}`);
         this.entries = res.data;
+        
+        this.calcPercentage();
 
         this.$toast.clear(loading)
       } catch (error) {
         this.$toast.clear(loading)
         this.$toast.error("Sorry an error occurred");
       }
+    },
+    calcPercentage() {
+        this.calculations = [];
+        
+        this.entries.forEach(elm => {
+            let k = Object.keys(elm.data)
+            let second = k[k.length - 2]
+            let last = k[k.length - 1]
+
+            if (k.length > 1 && elm.data[second] != 0) {
+                let diff = elm.data[second] - elm.data[last]
+                let act = 'Stable';
+                let difference = 0;
+                let percentage = 0;
+                if (diff < 0) {
+                    act = 'Increase'
+                    difference = '+' + Math.abs(diff)
+                    percentage = '+' + Math.round((Math.abs(((elm.data[second] - elm.data[last]) / elm.data[second] * 100)) + Number.EPSILON) * 100) / 100
+                }
+                if (diff > 0) {
+                    act = 'Decrease'
+                    difference = '-' + Math.abs(diff)
+                    percentage = '-' + Math.round((Math.abs(((elm.data[second] - elm.data[last]) / elm.data[second] * 100)) + Number.EPSILON) * 100) / 100
+                }
+
+                this.calculations.push({
+                    name: elm.name,
+                    action: act,
+                    difference: difference,
+                    percentage: percentage
+                })
+            }
+        });
     }
   }
 };
