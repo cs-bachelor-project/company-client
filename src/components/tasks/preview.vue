@@ -19,11 +19,11 @@
           </tr>
           <tr v-if="entry.details.find(elm => elm.action == 'pick').completed_at != null">
             <th>Picked up at</th>
-            <td>{{entry.details.find(elm => elm.action == 'pick').completed_at}}</td>
+            <td title="Time in UTC">{{entry.details.find(elm => elm.action == 'pick').completed_at}}</td>
           </tr>
           <tr v-if="entry.details.find(elm => elm.action == 'drop').completed_at != null">
             <th>Dropped off at</th>
-            <td>{{entry.details.find(elm => elm.action == 'drop').completed_at}}</td>
+            <td title="Time in UTC">{{entry.details.find(elm => elm.action == 'drop').completed_at}}</td>
           </tr>
           <tr>
             <th scope="col">#</th>
