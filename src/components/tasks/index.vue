@@ -43,6 +43,7 @@
             <th scope="col">Pick Up</th>
             <th scope="col">Drop Off</th>
             <th scope="col">Note</th>
+            <th scope="col">Driver</th>
             <th scope="col"></th>
           </tr>
         </thead>
@@ -52,11 +53,12 @@
             <td>{{entry.person_name}}</td>
             <td :title="utcToLocal(entry.details[0].scheduled_at)">{{utcToLocal(entry.details[0].scheduled_at).fromNow()}}</td>
             <td :title="utcToLocal(entry.details[1].scheduled_at)">{{utcToLocal(entry.details[1].scheduled_at).fromNow()}}</td>
-            <td>{{entry.note}}</td>
+            <td>{{subNote(entry.note)}}</td>
+            <td v-if="entry.user_name" style="color: green; font-weight: bold;">{{entry.user_name}}</td> <td v-else style="color: red; font-weight: bold;">Not assigned</td>
             <td><router-link :to="{name: 'task-preview', params: {id: entry.id}}" class="nav-link">View</router-link></td>
           </tr>
           <tr>
-            <td colspan="6" class="text-center card-bg-secondary py-1"><button type="button" class="btn btn-link" v-on:click.prevent="loadMore()" :disabled="meta.currentPage >= meta.totalPages">Load Older Entries</button></td>
+            <td colspan="7" class="text-center card-bg-secondary py-1"><button type="button" class="btn btn-link" v-on:click.prevent="loadMore()" :disabled="meta.currentPage >= meta.totalPages">Load Older Entries</button></td>
           </tr>
         </tbody>
       </table>
@@ -138,6 +140,17 @@ export default {
     loadCancelled() {
       this.status = 'cancelled'
       this.loadData()
+    },
+    subNote(note, limit=75) {
+      if (!note) {
+        return
+      }
+
+      if (note.length > limit) {
+        return note.substring(0, limit) + '...'
+      }
+
+      return note
     },
   }
 }
